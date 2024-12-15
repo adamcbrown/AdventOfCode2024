@@ -28,6 +28,10 @@ let () =
     | "11.2" -> Day11.part2
     | "12.1" -> Day12.part1
     | "12.2" -> Day12.part2
+    | "13.1" -> Day13.part1
+    | "13.2" -> Day13.part2
+    | "14.1" -> Day14.part1
+    | "14.2" -> Day14.part2
     | v -> raise (Invalid_argument v)
   in
   print_string (fn txt); print_newline()
