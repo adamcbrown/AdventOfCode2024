@@ -16,7 +16,6 @@ let parse_map txt =
   player, ending, (w, h), is_wall
 
 
-
 let (+.) (x1, y1) (x2, y2) = (x1 + x2, y1+y2)
 
 let compute_distance_matrix (init_player, is_wall) =
@@ -38,7 +37,7 @@ let compute_distance_matrix (init_player, is_wall) =
   check_state (init_player, 0);
   spots
 
-  let part1 txt =
+  let solve cheat_distance txt =
     let init_player, _, _, is_wall = parse_map txt in
     
     let distance_matrix = compute_distance_matrix (init_player, is_wall) in
@@ -54,7 +53,7 @@ let compute_distance_matrix (init_player, is_wall) =
   
     let search s =
       points
-      |> List.filter (fun e -> distance (fst s) (fst e) <= 2)
+      |> List.filter (fun e -> distance (fst s) (fst e) <= cheat_distance)
       |> List.map (fun e -> (s, e)) in
   
     points
@@ -65,30 +64,5 @@ let compute_distance_matrix (init_player, is_wall) =
     |> List.length
     |> string_of_int
 
-let part2 txt =
-  let init_player, _, _, is_wall = parse_map txt in
-  
-  let distance_matrix = compute_distance_matrix (init_player, is_wall) in
-    
-  let points =
-    Hashtbl.to_seq distance_matrix
-    |> List.of_seq
-    |> List.sort (fun a b -> compare (snd a) (snd b)) in
-
-  let distance (x1, y1) (x2, y2) = abs(x1-x2) + abs(y1-y2) in
-  
-  let score (s, e) = (snd e - snd s) - (distance (fst e) (fst s)) in
-
-  let search s =
-    points
-    |> List.filter (fun e -> distance (fst s) (fst e) <= 20)
-    |> List.map (fun e -> (s, e)) in
-
-  points
-  |> List.map search
-  |> List.concat
-  |> List.map score
-  |> List.sort compare
-  |> List.filter (fun s -> s >= 100)
-  |> List.length
-  |> string_of_int
+let part1 = solve 2
+let part2 = solve 20
